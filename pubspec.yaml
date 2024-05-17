@@ -37,6 +37,12 @@ dependencies:
   cupertino_icons: ^1.0.6
   flutter_native_splash:
   flutter_screenutil: ^5.8.4
+  firebase_core:
+  firebase_auth:
+  fluttertoast:
+  animate_do:
+  google_sign_in: ^5.2.2
+  pin_code_fields:
 
 dev_dependencies:
   flutter_test:

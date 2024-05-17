@@ -5,7 +5,9 @@ const splashScreen = '/';
 const onBoarding = '/onBoarding';
 const welcomeScreen = '/welcome';
 const homeScreen = '/home';
+const signUpScreen = '/signUp';
+const signInScreen = '/signIn';
 
 
 const primaryColor = Color(0xffD91B5C);
-const welcomeBackGroundColor = Color(0xffF7F8FA);
+const mainBackGroundColor = Color(0xffF7F8FA);

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "643311868556",
+    "project_id": "wedvision-10723",
+    "storage_bucket": "wedvision-10723.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:643311868556:android:ebd97f1fa3be77ec6779a9",
+        "android_client_info": {
+          "package_name": "com.example.wedvision"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpPN_9BFW71ksGfM1jAupYq1r90eD16VA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
