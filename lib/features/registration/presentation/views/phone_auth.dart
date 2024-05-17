@@ -4,7 +4,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:wedvision/core/utils/assets.dart';
-
 import '../../../../constants.dart';
 
 class PhoneSignUpScreen extends StatefulWidget {
@@ -27,7 +26,7 @@ class _PhoneSignUpScreenState extends State<PhoneSignUpScreen> {
     });
 
     await FirebaseAuth.instance.verifyPhoneNumber(
-      phoneNumber: '+20' + _phoneController.text, // Egyptian country code
+      phoneNumber: '+20${_phoneController.text}', // Egyptian country code
       verificationCompleted: (PhoneAuthCredential credential) async {
         await FirebaseAuth.instance.signInWithCredential(credential);
         Fluttertoast.showToast(msg: 'Phone number automatically verified and user signed in.');
@@ -68,6 +67,7 @@ class _PhoneSignUpScreenState extends State<PhoneSignUpScreen> {
     try {
       await FirebaseAuth.instance.signInWithCredential(credential);
       Fluttertoast.showToast(msg: 'Successfully signed in with phone number');
+      Navigator.pushReplacementNamed(context, welcomeScreen);
     } catch (e) {
       Fluttertoast.showToast(msg: 'Failed to sign in, Please try again.');
     }
@@ -95,7 +95,7 @@ class _PhoneSignUpScreenState extends State<PhoneSignUpScreen> {
           elevation: 5,
           title: Text('Phone Verification', style: TextStyle(
             color: Colors.black,
-            fontFamily: 'MainFont',
+            fontFamily: AssetsData.mainFont,
             fontWeight: FontWeight.bold,
             fontSize: 25.sp,
           ),),
@@ -113,7 +113,15 @@ class _PhoneSignUpScreenState extends State<PhoneSignUpScreen> {
                   TextField(
                     controller: _phoneController,
                     keyboardType: TextInputType.phone,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
+                      labelStyle: TextStyle(
+                        color: Colors.black,
+                        fontFamily: AssetsData.mainFont,
+                      ),
+                      hintStyle: TextStyle(
+                        color: Colors.black,
+                        fontFamily: AssetsData.mainFont,
+                      ),
                       labelText: 'Phone Number',
                       hintText: '123 456 7890', // without country code
                       border: OutlineInputBorder(
@@ -163,17 +171,19 @@ class _PhoneSignUpScreenState extends State<PhoneSignUpScreen> {
                           borderRadius: BorderRadius.circular(8.r),
                         ),
                       ),
-                      child: const Text('Verify Code', style: TextStyle(
+                      child: const Text(
+                        'Verify Code',
+                        style: TextStyle(
                         color: Colors.white,
-                        fontFamily: 'MainFont',
+                        fontFamily: AssetsData.mainFont,
                       ),),
                     ),
                   ],
                 ],
               ),
               if (_isLoading)
-                Center(
-                  child: CircularProgressIndicator(),
+                const Center(
+                  child: CircularProgressIndicator(color: primaryColor,),
                 ),
             ],
           ),

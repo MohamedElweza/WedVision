@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:wedvision/constants.dart';
-import 'package:wedvision/features/registration/presentation/views/phone_auth.dart';
-import 'package:wedvision/features/registration/presentation/views/sign_up.dart';
+import 'package:wedvision/core/utils/assets.dart';
+import 'package:wedvision/core/widgets/custom_elevated_button.dart';
+import 'package:wedvision/features/registration/presentation/views/widgets/custom_sign_up_button.dart';
+import 'package:wedvision/features/registration/presentation/views/widgets/custom_text_field.dart';
+import '../../../../core/services/google_service.dart';
 
 
 class SignInScreen extends StatefulWidget {
@@ -42,7 +44,7 @@ class _SignInScreenState extends State<SignInScreen> {
         textColor: Colors.white,
         fontSize: 16.0,
       );
-      // Navigate to home screen if successful
+      Navigator.pushReplacementNamed(context, welcomeScreen);
     } else {
       Fluttertoast.showToast(
         msg: 'Google sign-in failed',
@@ -72,8 +74,7 @@ class _SignInScreenState extends State<SignInScreen> {
         _isLoading = false;
       });
 
-      Navigator.pushNamed(context, '/signUp');
-      // Navigate to home screen if successful
+      Navigator.pushNamed(context, welcomeScreen);
     } catch (e) {
       if (kDebugMode) {
         print(e);
@@ -123,7 +124,7 @@ class _SignInScreenState extends State<SignInScreen> {
             foregroundColor: Colors.white,
             title: const Text('Sign In', style: TextStyle(
           color: Colors.black,
-          fontFamily: 'MainFont',
+          fontFamily: AssetsData.mainFont,
           fontWeight: FontWeight.bold,
         ),)),
         body: Padding(
@@ -139,22 +140,11 @@ class _SignInScreenState extends State<SignInScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    ElevatedButton(
-                      onPressed: _signIn,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: primaryColor,
-                        fixedSize: Size(MediaQuery.of(context).size.width/2, 60.h),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.r),
-                        ),
-                      ),
-                      child: Text(
-                        'Sign In', style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16.sp,
-                        fontFamily: 'MainFont',
-                      ),),
-                    ),
+                    CustomElevatedButton(
+                        onPressed: _signIn,
+                        text: 'Sign In',
+                    width: MediaQuery.of(context).size.width/2,
+                ),
                     SizedBox(width: 15.w,),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -166,7 +156,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         ),),
                         GestureDetector(
                           onTap: () {
-                            Navigator.pushNamed(context, '/signUp');
+                            Navigator.pushNamed(context, signUpScreen);
                                               },
                           child: Text('SIGN UP', style: TextStyle(
                             color: primaryColor,
@@ -189,31 +179,12 @@ class _SignInScreenState extends State<SignInScreen> {
                         FadeInUp(
                           duration: duration,
                           delay: const Duration(milliseconds: 600),
-                          child: ElevatedButton(
-                            onPressed: _handleGoogleSignIn,
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.red,
-                              fixedSize: Size(MediaQuery.of(context).size.width, 60.h),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8.r),
-                              ),
-                            ),
-                            child: Row(
-                              children: [
-                                const Icon(Icons.login, color: Colors.white,),
-
-                                SizedBox(width: 15.w,),
-
-                                Text(
-                                  'Sign Up with Google', style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: 'MainFont',
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.bold,
-                                ),),
-                              ],
-                            ),
-                          ),
+                          child: CustomSignUpElevatedButton(
+                            buttonColor: Colors.green,
+                            title: 'Sign Up with Google',
+                            buttonSize: MediaQuery.of(context).size.width,
+                            onPressed: () { _handleGoogleSignIn(); },
+                            icon: Icons.login_outlined,),
                         ),
       
                         SizedBox(
@@ -225,31 +196,12 @@ class _SignInScreenState extends State<SignInScreen> {
                           child: FadeInUp(
                             duration: duration,
                             delay: const Duration(milliseconds: 200),
-                            child: ElevatedButton(
-                              onPressed: (){
-                                Navigator.push(context, MaterialPageRoute(builder: (context)=> const PhoneSignUpScreen()));
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.green,
-                                fixedSize: Size(MediaQuery.of(context).size.width, 60.h),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8.r),
-                                ),
-                              ),
-                              child: Row(
-                                children: [
-                                  const Icon(Icons.phone, color: Colors.white,),
-                                  SizedBox(width: 15.w,),
-                                  Text(
-                                    'Sign Up with Phone', style: TextStyle(
-                                    color: Colors.white,
-                                    fontFamily: 'MainFont',
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.bold,
-                                  ),),
-                                ],
-                              ),
-                            ),
+                            child: CustomSignUpElevatedButton(
+                              buttonColor: Colors.green,
+                              title: 'Sign Up with Phone',
+                              buttonSize: MediaQuery.of(context).size.width,
+                              onPressed: () { Navigator.pushReplacementNamed(context, phoneScreen); },
+                              icon: Icons.phone,),
                           ),
                         ),
                       ],
@@ -269,27 +221,4 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 }
 
-class AuthService {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  // Google Sign-In
-  Future<User?> signInWithGoogle() async {
-    try {
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-      final GoogleSignInAuthentication googleAuth = await googleUser!
-          .authentication;
-      final AuthCredential credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-      final UserCredential userCredential = await _auth.signInWithCredential(
-          credential);
-      return userCredential.user;
-    } catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
-      return null;
-    }
-  }
-}

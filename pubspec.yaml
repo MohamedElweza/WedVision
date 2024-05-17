@@ -43,6 +43,10 @@ dependencies:
   animate_do:
   google_sign_in: ^5.2.2
   pin_code_fields:
+  carousel_slider:
+  table_calendar: ^3.0.1
+  url_launcher: ^6.0.9
+  http:
 
 dev_dependencies:
   flutter_test:

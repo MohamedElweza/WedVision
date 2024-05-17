@@ -3,6 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wedvision/constants.dart';
 import 'package:wedvision/core/utils/assets.dart';
 
+import '../../../../core/widgets/custom_elevated_button.dart';
+import 'on_boarding_page.dart';
+
 class OnBoardingScreen extends StatefulWidget {
   const OnBoardingScreen({super.key});
 
@@ -104,20 +107,11 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
 
                 ]
 
-              ) : ElevatedButton(
-            onPressed: _getStarted,
-            style: ElevatedButton.styleFrom(
-            backgroundColor: primaryColor,
-              fixedSize: Size(double.infinity, 50.h),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.r),
-              ),
-            ),
-            child: const Text('Get Started', style: TextStyle(
-            color: Colors.white,
-                fontFamily: 'MainFont'
-            ))
-      ), )
+              ) : CustomElevatedButton(
+                  onPressed: _getStarted,
+                  text: 'Get Started',
+                  width: MediaQuery.of(context).size.width)
+              )
 
                 ],
         ),
@@ -129,37 +123,4 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
 
 
 
-class OnBoardingPage extends StatelessWidget {
-  final String image;
-  final String title;
-  final String subtitle;
 
-  const OnBoardingPage({super.key, required this.image, required this.title, required this.subtitle});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10.0.w),
-          child: Image.asset(image, height: 300.h, width: double.infinity),
-        ),
-        SizedBox(height: 20.h),
-        Text(
-          title,
-          style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold, fontFamily: 'MainFont'),
-        ),
-        SizedBox(height: 10.h),
-        Padding(
-          padding:  EdgeInsets.symmetric(horizontal: 20.0.w),
-          child: Text(
-            subtitle,
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 16.sp, color: Colors.grey, fontFamily: 'MainFont'),
-          ),
-        ),
-      ],
-    );
-  }
-}

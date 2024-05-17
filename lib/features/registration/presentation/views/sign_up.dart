@@ -4,6 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:wedvision/constants.dart';
+import 'package:wedvision/core/utils/assets.dart';
+import 'package:wedvision/features/registration/presentation/views/widgets/custom_text_field.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -32,7 +34,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
         password: _passwordController.text,
       );
 
-      // Update the display name and phone number
       await userCredential.user?.updateDisplayName(_nameController.text);
 
       Fluttertoast.showToast(
@@ -45,7 +46,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
         fontSize: 16.0,
       );
 
-      // Navigate to home screen if successful
+      Navigator.pushReplacementNamed(context, signInScreen);
+
     } catch (e) {
       if (kDebugMode) {
         print(e);
@@ -59,7 +61,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           return AlertDialog(
             title: const Text('Error', style: TextStyle(
               color: Colors.black,
-              fontFamily: 'MainFont',
+              fontFamily: AssetsData.mainFont,
               fontWeight: FontWeight.bold,
             ),),
             content: Text(e.toString()),
@@ -70,7 +72,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 },
                 child: const Text('OK', style: TextStyle(
                   color: Colors.black,
-                  fontFamily: 'MainFont',
+                  fontFamily: AssetsData.mainFont,
                   fontWeight: FontWeight.bold,
                 ),),
               ),
@@ -91,7 +93,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             onPressed: (){
               Navigator.pop(context);
             },
-            icon: Icon(Icons.arrow_back, color: primaryColor,),),
+            icon: const Icon(Icons.arrow_back, color: primaryColor,),),
             centerTitle:  true,
             elevation: 5,
             surfaceTintColor: Colors.white,
@@ -142,39 +144,5 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ),
       ),
     );
-  }
-}
-
-class CustomTextField extends StatelessWidget {
-  const CustomTextField({
-    super.key,
-    required TextEditingController nameController, required this.label, required this.hint, required this.secure,
-  }) : _nameController = nameController;
-
-  final TextEditingController _nameController;
-  final String label;
-  final String hint;
-  final bool secure;
-
-  @override
-  Widget build(BuildContext context) {
-    return TextField(
-      controller: _nameController,
-      obscureText: secure,
-      decoration:  InputDecoration(
-        border:  const OutlineInputBorder(
-            borderSide:  BorderSide(color: Colors.white12)
-        ),
-        hintText: hint,
-        hintStyle: const TextStyle(
-          color: Colors.grey,
-          fontFamily: 'MainFont',),
-        labelStyle:  const TextStyle(
-          color: primaryColor,
-          fontFamily: 'MainFont',
-        ),
-        labelText: label,
-        prefixText: ' '
-    ),);
   }
 }

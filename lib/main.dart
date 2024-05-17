@@ -1,6 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:wedvision/features/home/presentation/views/details_screen.dart';
+import 'package:wedvision/features/home/presentation/views/home.dart';
+import 'package:wedvision/features/registration/presentation/views/welcome_screen.dart';
 import 'core/utils/app_router.dart';
 import 'firebase_options.dart';
 
@@ -34,6 +37,7 @@ final AppRouter appRouter;
         },
         debugShowCheckedModeBanner: false,
         onGenerateRoute: appRouter.generateRoute,
+        home: HomeScreen(),
       ),
     );
   }
